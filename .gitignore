@@ -1,0 +1,4 @@
+.error
+nbproject
+*~
+httpdocs/lib/*
