@@ -104,3 +104,15 @@ $this->module->article->repository->fetchAll(array(
 	'contentRel_id_content_slave' => $tree_id,
 ));
 
+
+
+------------------------------------------------
+
+Mozna stworzyc metody w podstawowym serwisie typu 
+
+```
+module_article_service->beforeSave(array &$entity)
+                      ->afterFetch(array &$entity)
+```
+
+i je odpalac

@@ -1,0 +1,20 @@
+container $this->importinput z inputami z mozliwoscia iteracji
+content->serviceImporter
+
+interface module_content_serviceImporter_interface
+{
+    public function all($iAll);
+    public function import(array $entity);        
+    public function up();
+}
+
+interface module_content_serviceImporter_input_interface
+{
+
+    fetchAll()
+    fetch($content_origin)
+    importer()
+
+
+
+}
