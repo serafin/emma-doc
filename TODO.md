@@ -1,72 +1,11 @@
-
-
-
-
 Notatki
 =======
 
+- (content->serviceRel),  nie ma rzeczy uniwersalnych, per plaikacja: content_count i content_id, zapis content_id_img
+- (content->service) zapis recursive replace przez service
+- paramsy z wartosciami dla contentu lub jako flagi bez wartosci,klucz 255 i wartosc text, jako osobna tabela
+- zawsze przekazywac model danych entity nie musi byc pelny ale zawsze entity
 
-
-dwa typy relacji content<->content:
-przez wlasciowosc - czyli repo sie tym zajmuje i nic wiecej nie trzeba wiedziec np. content_id_img
-przez contentRel gdzie jest hierarchia
- 
- 
-nie ma rzeczy uniwersalnych
-per plaikacja:
-content_count
-i content_id
-
-
-
-content rel
- 
-pobieranie slaves lub masters - w teorii
- 
-ale w praktyce zawsze sie pobiera fetchAllRelatedWithMaster
- 
-wyjatek:
- 
-        $result->profile = $this->module->profile->getRepository()->fetch(array(
-            'content_id'     => m_contentRel::_()->field('contentRel_id_content_master')->fetchVal(array('contentRel_id_content_slave' => $result->pet['content_id'], 'contentRel_slave_type' => 'pet')),
-            'content_type'   => 'profile',
-            'content_public' => 'yes'
-        ));
-
-zlozona praca z contentem przez serwisy
- 
-- attachData
-- pobieranie master?
-
-- usuwac tez relacje
-
-zapis recursive replace przez service
- 
-paramsy z wartosciami dla contentu lub jako flagi bez wartosci
-klucz 255 i wartosc text
- 
-zawsze przekazywac model danych entity nie musi byc pelny ale zawsze entity
- 
-content_origin i czesto podawac content_type
- 
-content_service_pet::fetchProfile
-
-
-
-tryb podlaczenia 0,1,2; timestamp; dowolny
- 
-dodanie nowego elementu dla kazdego trybu
- 
-usuwanie elementu to usuwanie rel
-
-
-
-
-zapis content_id_img
- 
-moze to jakos niskopodlgowo zrobic
- 
-+ service kotry bedize robil 80% zadan
 
 
 i joiny dla contentRel + contentinbox count = how?
@@ -105,10 +44,10 @@ module_content_service_rel
 zadania:
 
 - add 1 dodac nowego slave: z orderem MAX+1
-  $this->module->content->serviceRel->addSlave($master, $slave[, 'img']);
-  $this->module->content->serviceRel->addSlave($master, $slave[, 'img']);
+  $this->module->content->serviceRel->addSlave($master, $slave[, 'img'], $order = null);
+  $this->module->content->serviceRel->addSlave($master, $slave[, 'img'], $order = null);
 - add 8 zdefiniowac nowe relac
-  $this->module->content->serviceRel->setSlaves($master, $slaves[, 'img']);
+  $this->module->content->serviceRel->setSlaves($master, $slaves[, 'img'], $order = null);
 
 - remove 1
   $this->module->content->serviceRel->removeSlave($master, $slave[, 'img'])
