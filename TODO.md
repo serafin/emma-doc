@@ -30,6 +30,7 @@ nie robic tego tylko to opisac
 
 404 notfound
 
+standardowe widoki - proste, na cala szerokosc, brak sliderow ..
 
 ----------------
 
