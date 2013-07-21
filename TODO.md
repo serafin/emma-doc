@@ -1,3 +1,11 @@
+
+
+- zamienic 'rel' na 'contentRel'
+- module_tree_serviceTree
+- module_tree_serviceTreeNode
+
+
+
 Notatki
 =======
 
@@ -117,3 +125,7 @@ module_article_service->beforeSave(array &$entity)
 ```
 
 i je odpalac
+
+
+$this->module->import->task->runImportThread()
+$this->module->import->task->createImporterFromTask(m_import $importTask)
