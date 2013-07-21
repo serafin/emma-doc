@@ -7,5 +7,6 @@ Dokumentacja do EMMA (Elasytczna MikroModułowa Architektura) - szkielet z podst
 - importy
   - inputy `module_import_input_interface`
   - importer `module_import_importer`
-  - task `m_import` i `module_import_task`
+  - task - model `m_import` i service `module_import_task`
 - admin
+- front - activity i view
