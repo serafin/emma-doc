@@ -2,10 +2,23 @@
 - module_content_repository z zapisem danych
 
 
+- module_content_operation
+{
+    beforeSave(array $entity);
+    beforeSaveContent(array $entity);
+    beforeSaveArticle(array $entity);
+    
+    afterSave(array $entity);
+    
+    afterFetch(array $entity);
+}
+
+
+
 obsluga drzewa
 ==============
 
-module_tree_serviceTree
+module_tree_tree
 {
     module() { return f::$c->module->tree; }
     getAll();
@@ -25,7 +38,7 @@ module_tree_serviceTree
     getParent();  // module_tree_serviceTreeNode
     
 }
-module_tree_serviceTreeNode
+module_tree_treeNode
 {
     is();
     getId();
@@ -34,20 +47,20 @@ module_tree_serviceTreeNode
     getChild();
 }
 
-$this->tree        = $this->module->tree->serviceTree();
-$this->treecurrent = $this->module->tree->serviceTree()->getCurrent();
-$this->treeparent  = $this->module->tree->serviceTree()->getParent();
+$this->tree        = $this->module->tree->tree;
+$this->treecurrent = $this->module->tree->tree->getCurrent();
+$this->treeparent  = $this->module->tree->tree->getParent();
 
 
 
 indeksowanie i szukanie
 =======================
 
-- cos jak na gastro
-- searchword
-- searchcontent
-- podzial na kilka typow/priorytetow
+- cos jak na gastro`
+- contentSearchWord
+- contentSearch
 - content_search_update
+- content_search_checksum
 - module_content_repository_interface->entity2search($entity) =>
 array(
     '',
@@ -55,11 +68,11 @@ array(
     '',
 )
 - $this->module->content->search->index($entity);
+- $this->module->content->search->indexAll()
 - dodanie szukania do wszystkich entity danego typu
-- strategie generowania indeksu 
 - fetch(array(
-    'search'          => 'Ala ma kota'
-    'search_operator' => 'AND' // operator logiczny AND OR, default AND
+    'contentSearch'          => 'Ala ma kota'
+    'contentSearch_operator' => 'AND' // operator logiczny AND OR, default AND
 ));
 
 
