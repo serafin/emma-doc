@@ -1,8 +1,67 @@
+- importer
+- module_content_repository z zapisem danych
 
 
-- zamienic 'rel' na 'contentRel'
-- module_tree_serviceTree
-- module_tree_serviceTreeNode
+obsluga drzewa
+==============
+
+module_tree_serviceTree
+{
+    module() { return f::$c->module->tree; }
+    getAll();
+    getTree();
+    getTitle($id)
+    get{Cos}By{Cos_innego_iz_id}
+    getLocation($id)
+    getLocationPaths($id);
+    getSibling($id);
+    getSiblingPaths($id);
+    getChild($id);
+    
+    isCurrent();
+    isParrent();
+    setCurrent(); // ustawia current i parrent
+    getCurrent(); // module_tree_serviceTreeNode
+    getParent();  // module_tree_serviceTreeNode
+    
+}
+module_tree_serviceTreeNode
+{
+    is();
+    getId();
+    getTitle();
+    getLocation(); {return $tree->getLocation($this->getId()); }
+    getChild();
+}
+
+$this->tree        = $this->module->tree->serviceTree();
+$this->treecurrent = $this->module->tree->serviceTree()->getCurrent();
+$this->treeparent  = $this->module->tree->serviceTree()->getParent();
+
+
+
+indeksowanie i szukanie
+=======================
+
+- cos jak na gastro
+- searchword
+- searchcontent
+- podzial na kilka typow/priorytetow
+- content_search_update
+- module_content_repository_interface->entity2search($entity) =>
+array(
+    '',
+    '',
+    '',
+)
+- $this->module->content->search->index($entity);
+- dodanie szukania do wszystkich entity danego typu
+- strategie generowania indeksu 
+- fetch(array(
+    'search'          => 'Ala ma kota'
+    'search_operator' => 'AND' // operator logiczny AND OR, default AND
+));
+
 
 
 
