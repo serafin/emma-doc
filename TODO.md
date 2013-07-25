@@ -1,24 +1,25 @@
-- importer
-- module_content_repository z zapisem danych
+TODO
+====
 
+1. importer i import task
+   $this->module->import->task->runImportThread()
+   $this->module->import->task->createImporterFromTask(m_import $importTask)
+   
+2. module_content_repository z zapisem danych
 
-- module_content_operation
+3. module_content_operation
 {
     beforeSave(array $entity);
-    beforeSaveContent(array $entity);
-    beforeSaveArticle(array $entity);
-    
     afterSave(array $entity);
-    
     afterFetch(array $entity);
 }
+$this->module->content->operation->beforeSave($entity);
+$this->module->content
+zrobic pseudo implementacje: count, content_id_content_tree, parowanie body, indeksowanie dla wyszukiwarka
+flaga _new entity
+$this->module->content->rel->ref($entity, 'content_id_content_tree', $entity['contentRelation']['tree'][0]);
 
-
-
-obsluga drzewa
-==============
-
-module_tree_tree
+4. obsluga drzewa module_tree_tree
 {
     module() { return f::$c->module->tree; }
     getAll();
@@ -51,11 +52,7 @@ $this->tree        = $this->module->tree->tree;
 $this->treecurrent = $this->module->tree->tree->getCurrent();
 $this->treeparent  = $this->module->tree->tree->getParent();
 
-
-
-indeksowanie i szukanie
-=======================
-
+5. indeksowanie i szukanie
 - cos jak na gastro`
 - contentSearchWord
 - contentSearch: id_content id_contentSearchWord
@@ -79,130 +76,60 @@ array(
     'contentSearch_operator' => 'AND' // operator logiczny AND OR, default AND
 ));
 
+6. $this->module->content->service->saveRecursiveByRelation($entity, $contentRelation_type, array $data)
+{
+    $update = array(); // ustawic content_id lub content_origin
+    $update += $data;
+    
+    $id = $this->module->content->save($update); // jezeli nei bylo content_id to go dostaniemy
+    
+    foreach (
+        $this->module->content->fetchAll(array(
+            'contentRelation_id_content_master' => $id,
+            'contentRelation_type'              => $contentRelation_type,
+            'order'                             => contentR..._order
+        ))
+        as $slave
+    ) {
+        $this->saveRecursiveByRelation(array('content_id' => , $contentRelation_type, $data));
+    }
+} 
+
+7. comment to content czy nie? jezeli da sie obsluzyc przez fetcher() i pozniej tuples2entities() to nie musi byc contentem 
+
+8. $this->module->content->service->fetchAllKeyedByIdsAndOrder($aIds); i podmienic w module_content_subcontent_contentRelated
+
+
+Best practice
+=============
+
+- zawsze przekazywac model danych entity nie musi byc pelny ale zawsze entity
+- pisac uniwersalne funkcje np. saveRecursiveByRelation - dowolnya relacja, dowolny typ danych
+- standardowe widoki - proste, na cala szerokosc, brak sliderow ...
+- z robotsami inaczej pracowac
+- bledy na tiere: content_id_user a powinno byc content_id_profile
+
 
 Notatki
 =======
 
-- comment to content czy nie?
-  jezeli da sie obsluzyc przez fetcher() i pozniej tuples2entities() to nie musi byc contentem
-
-- (content->serviceRel),  nie ma rzeczy uniwersalnych, per plaikacja: content_count i content_id, zapis content_id_img
-- (content->service) zapis recursive replace przez service
-- paramsy z wartosciami dla contentu lub jako flagi bez wartosci,klucz 255 i wartosc text, jako osobna tabela
-- zawsze przekazywac model danych entity nie musi byc pelny ale zawsze entity
-
-
-
-i joiny dla contentRelation + contentinbox count = how?
-
-
-petFootrprint jhak to powinno byc zrobione?
- 
+- petFootrprint jhak to powinno byc zrobione?
 - lista footprintow pogrupowana dla obrazka peta
 - ostatni footprint
-
-
 - dodatkowa walidacja przez event w c_Admin_article, podlaczanie sie pre i post przy akcjach na contencie
-
-
-
-
-listy sortowane dla danego modulu
-czyli w c_admin_costam mozna wlaczyc order reczny po polu costam_order
-nie robic tego tylko to opisac
-
-
-
-404 notfound
-
-standardowe widoki - proste, na cala szerokosc, brak sliderow ..
-
-----------------
-
-przetestowac:
-admin_form
-module_admin_plugin_formCancel
-module_admin_plugin_saveAndClose
-
-
-module_content_service_rel
-
-zadania:
-
-- add 1 dodac nowego slave: z orderem MAX+1
-  $this->module->content->serviceRel->addSlave($master, $slave[, 'img'], $order = null);
-  $this->module->content->serviceRel->addSlave($master, $slave[, 'img'], $order = null);
-- add 8 zdefiniowac nowe relac
-  $this->module->content->serviceRel->setSlaves($master, $slaves[, 'img'], $order = null);
-
-- remove 1
-  $this->module->content->serviceRel->removeSlave($master, $slave[, 'img'])
-- remove 8
-  $this->module->content->serviceRel->removeSlaves($master, $slaves[, 'img'])
-  $this->module->content->serviceRel->removeAllSlaves($master, 'img')
-
-  
-- move 1 before
-  $this->module->content->serviceRel->moveBefore($master, $slave, $beforeSlave[, 'img']);
-- move 1 after
-  $this->module->content->serviceRel->moveBefore($master, $slave, $afterSlave[, 'img']);
-
-- zapis pierwszego do content_id_content_img
-  $this->module->content->serviceRel->setMainRel($master, $slave, 'content_id_content_img')
-
-- zapis counta - na zasadzie oblicz
-  $this->module->content->serviceRel->setCountByCalculation(master, 'img', 'content_count_content_img')
-
-- zapis counta --
-  $this->module->content->serviceRel->setCountByIncrement(master, 'img', 'content_count_content_img')
-
-- zapis counta ++
-  $this->module->content->serviceRel->setCountByIncrement(master, 'img', 'content_count_content_img')
-
-$this->module->content->serviceOrder->saveOrder($content_type, $aNewOrder);
-  
-  
-- pobieranie slave
-- pobieranie masterow
-
-array('contentRelation_id_content_master' => 13, contentRelation_type 'img');
-
-
-
-
-
-wyjatkowe artykuly
- 
-content_list = 'yes' | 'no' DEFAULT yes
-
-z robotsami inaczej pracowac
-
-$this->module->content->service->fetchAllByIdsAndOrder($aIds);
-
+- listy sortowane dla danego modulu czyli w c_admin_costam mozna wlaczyc order reczny po polu costam_order
+  nie robic tego tylko to opisac
+- acl do wezla w drzewie
+- feature
+- admin pluginy: admin_form, module_admin_plugin_formCancel, module_admin_plugin_saveAndClose
+- przygotowac sie na site
+- module->content->rel i counter 
+    - zapis counta - na zasadzie oblicz
+      $this->module->content->serviceRel->setCountByCalculation(master, 'img', 'content_count_content_img')
+    - zapis counta --
+      $this->module->content->serviceRel->setCountByIncrement(master, 'img', 'content_count_content_img')
+    - zapis counta ++
+      $this->module->content->serviceRel->setCountByIncrement(master, 'img', 'content_count_content_img')
+- wyjatkowe artykuly content_list = 'yes' | 'no' DEFAULT yes
 - wlasciowosc htmlmeta
 - contentOriginBan
-
-- bledy na tiere: content_id_user a powinno byc content_id_profile
-
-
-
-$this->module->article->repository->fetchAll(array(
-	'contentRelation_id_content_slave' => $tree_id,
-));
-
-
-
-------------------------------------------------
-
-Mozna stworzyc metody w podstawowym serwisie typu 
-
-```
-module_article_service->beforeSave(array &$entity)
-                      ->afterFetch(array &$entity)
-```
-
-i je odpalac
-
-
-$this->module->import->task->runImportThread()
-$this->module->import->task->createImporterFromTask(m_import $importTask)
