@@ -58,10 +58,14 @@ indeksowanie i szukanie
 
 - cos jak na gastro`
 - contentSearchWord
-- contentSearch
+- contentSearch: id_content id_contentSearchWord
 - content_search_update
 - content_search_checksum
-- module_content_repository_interface->entity2search($entity) =>
+- module_content_repository_interface->entity2search($entity) { // dodac do interface
+    $search = array();
+    each submodule ->entity2search($entity, $search)
+    $this->_entity2search($entity, $search) 
+}
 array(
     '',
     '',
@@ -76,10 +80,11 @@ array(
 ));
 
 
-
-
 Notatki
 =======
+
+- comment to content czy nie?
+  jezeli da sie obsluzyc przez fetcher() i pozniej tuples2entities() to nie musi byc contentem
 
 - (content->serviceRel),  nie ma rzeczy uniwersalnych, per plaikacja: content_count i content_id, zapis content_id_img
 - (content->service) zapis recursive replace przez service
@@ -88,7 +93,7 @@ Notatki
 
 
 
-i joiny dla contentRel + contentinbox count = how?
+i joiny dla contentRelation + contentinbox count = how?
 
 
 petFootrprint jhak to powinno byc zrobione?
@@ -160,7 +165,7 @@ $this->module->content->serviceOrder->saveOrder($content_type, $aNewOrder);
 - pobieranie slave
 - pobieranie masterow
 
-array('contentRel_id_content_master' => 13, contentRel_type 'img');
+array('contentRelation_id_content_master' => 13, contentRelation_type 'img');
 
 
 
@@ -182,7 +187,7 @@ $this->module->content->service->fetchAllByIdsAndOrder($aIds);
 
 
 $this->module->article->repository->fetchAll(array(
-	'contentRel_id_content_slave' => $tree_id,
+	'contentRelation_id_content_slave' => $tree_id,
 ));
 
 
