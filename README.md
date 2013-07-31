@@ -6,8 +6,8 @@ EMMA - Elasytczna MikroModułowa Architektura.
 Szkielet z podstawowymi modulami i funkcjami.
 
 
-Wersja - v2
------------
+Nowosci w v2
+------------
 
 - atomicznosc repozytoriow, repozytoria zapisuja tylko swoje wlasne entity, prosty zapis danych,
   w zapisie zadnych odwolan do zewnetrznych kosztownych operacji
@@ -20,6 +20,7 @@ Wersja - v2
 - wersjonowanie cotentow - dvc
 - indeksowanie danych dla wyszukiwania
 - laczenie contentow z innymi modelami nie contentowymi
+- uproszczono pobieranie slave'ow dla entity lub entities przez subcontent `contentRelated`
 
 
 Warstwy architektury 
